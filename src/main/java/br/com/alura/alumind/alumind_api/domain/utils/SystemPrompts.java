@@ -81,31 +81,6 @@ public class SystemPrompts {
                     • Marcar feedbacks como SPAM, retornando null nesses casos.
                     • Gerar uma resposta personalizada dependendo do sentimento, ou nada (null) para SPAM.
 
-                A resposta sempre será no formato JSON se o feedback for legítimo, e null quando for SPAM.
-                        
-                A resposta não pode vir assim quando o feedback for legítimo: 
-                        ```json
-                        {
-                          "sentiment": "NEGATIVO",
-                          "requestedFeatures": [
-                            {
-                              "code": "CORRIGIR_EDICAO_DATA_NASCIMENTO",
-                              "reason": "O usuário não consegue editar e salvar a data de nascimento."
-                            }
-                          ],
-                          "response": "Lamentamos saber que você está enfrentando problemas com a edição de sua data de nascimento. Vamos priorizar essa correção para melhorar a sua experiência com o Alumind. Agradecemos por nos informar!"
-                        }
-                        ```
-                Ela tem que vir assim:
-                        {
-                          "sentiment": "NEGATIVO",
-                          "requestedFeatures": [
-                            {
-                              "code": "CORRIGIR_EDICAO_DATA_NASCIMENTO",
-                              "reason": "O usuário não consegue editar e salvar a data de nascimento."
-                            }
-                          ],
-                          "response": "Lamentamos saber que você está enfrentando problemas com a edição de sua data de nascimento. Vamos priorizar essa correção para melhorar a sua experiência com o Alumind. Agradecemos por nos informar!"
-                        }                 
+                A resposta sempre será no formato JSON se o feedback for legítimo, e null quando for SPAM.                
                 """;
 }

@@ -8,6 +8,7 @@ import br.com.alura.alumind.alumind_api.domain.interfaces.FeedbackClassification
 import br.com.alura.alumind.alumind_api.domain.interfaces.RequestedFeaturesRepository;
 import br.com.alura.alumind.alumind_api.domain.model.FeedbackClassifications;
 import br.com.alura.alumind.alumind_api.domain.model.RequestedFeatures;
+import br.com.alura.alumind.alumind_api.domain.utils.MethodLibrary;
 import br.com.alura.alumind.alumind_api.domain.utils.SystemPrompts;
 import br.com.alura.alumind.alumind_api.domain.validations.feedback_classifications.create.ICreateFeedbackClassficationsValidation;
 import br.com.alura.alumind.alumind_api.infra.openai.OpenAIClient;
@@ -36,10 +37,11 @@ public class FeedbackClassificationsService {
         this.client = client;
     }
     public String create(CreateFeedbackClassificationsDTO createFeedbackClassificationsDTO) {
-        createFeedbackClassificationsValidation.forEach(v -> v.validate(createFeedbackClassificationsDTO));
-        var data = new RateFeedbackDataChatCompletion(SystemPrompts.FEEDBACK_CLASSIFICATION_PROMPT, createFeedbackClassificationsDTO.feedback());
-        var response = client.rateFeedbackChatCompletion(data);
-        try {
+        try{
+            createFeedbackClassificationsValidation.forEach(v -> v.validate(createFeedbackClassificationsDTO));
+            var data = new RateFeedbackDataChatCompletion(SystemPrompts.FEEDBACK_CLASSIFICATION_PROMPT, createFeedbackClassificationsDTO.feedback());
+            var response = client.rateFeedbackChatCompletion(data);
+            response = MethodLibrary.formatJsonOpenAI(response);
             ObjectMapper objectMapper = new ObjectMapper();
             FeedbackClassificationsDTO feedback = objectMapper.readValue(response, FeedbackClassificationsDTO.class);
             var newFeedbackClassifications = new FeedbackClassifications(createFeedbackClassificationsDTO.feedback(),feedback);
@@ -50,9 +52,11 @@ public class FeedbackClassificationsService {
                 var newRequestedFeatures = new RequestedFeatures(requestedFeaturesDTO);
                 requestedFeaturesRepository.save(newRequestedFeatures);
             }
+
+            return response;
         } catch (Exception e) {
             e.printStackTrace();
+            return null;
         }
-        return response;
     }
 }
