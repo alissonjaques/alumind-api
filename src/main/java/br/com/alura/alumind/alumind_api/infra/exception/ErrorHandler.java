@@ -21,13 +21,6 @@ public class ErrorHandler {
         return ResponseEntity.badRequest().body(errors.stream().map(ValidationErrorData::new).toList());
     }
 
-    @ExceptionHandler(Exception.class)
-    public ResponseEntity handleGeneralError(Exception ex) {
-        System.out.println("Erro: " + ex.getMessage());
-        ex.printStackTrace();
-        return ResponseEntity.internalServerError().body(new ExceptionDTO("Não foi possível realizar a operação. Motivo: erro interno no servidor.",500));
-    }
-
     private record ValidationErrorData(String campo, String mensagem) {
         public ValidationErrorData(FieldError erro){
             this(erro.getField(),erro.getDefaultMessage());

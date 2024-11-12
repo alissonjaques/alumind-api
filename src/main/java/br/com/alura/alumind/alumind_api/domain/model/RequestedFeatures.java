@@ -26,7 +26,7 @@ public class RequestedFeatures {
     private String reason;
 
     @ManyToOne
-    @JoinColumn(name = "feedback_classifications_id", nullable = false)
+    @JoinColumn(name = "feedback_id", nullable = false)
     private FeedbackClassifications feedbackClassifications;
 
     public RequestedFeatures(CreateRequestedFeaturesDTO data) {
