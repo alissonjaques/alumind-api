@@ -1,8 +1,6 @@
 package br.com.alura.alumind.alumind_api.domain.service;
 
-import br.com.alura.alumind.alumind_api.application.DTOs.feedback_classification.CreateFeedbackClassificationsDTO;
-import br.com.alura.alumind.alumind_api.application.DTOs.feedback_classification.CreateRequestedFeaturesDTO;
-import br.com.alura.alumind.alumind_api.application.DTOs.feedback_classification.FeedbackClassificationsDTO;
+import br.com.alura.alumind.alumind_api.application.DTOs.feedback_classification.*;
 import br.com.alura.alumind.alumind_api.domain.enums.Sentiment;
 import br.com.alura.alumind.alumind_api.domain.interfaces.FeedbackClassificationsRepository;
 import br.com.alura.alumind.alumind_api.domain.interfaces.RequestedFeaturesRepository;
@@ -36,7 +34,7 @@ public class FeedbackClassificationsService {
     public FeedbackClassificationsService(OpenAIClient client) {
         this.client = client;
     }
-    public String create(CreateFeedbackClassificationsDTO createFeedbackClassificationsDTO) {
+    public ResponseCreateFeedbackClassificationsDTO create(CreateFeedbackClassificationsDTO createFeedbackClassificationsDTO) {
         try{
             createFeedbackClassificationsValidation.forEach(v -> v.validate(createFeedbackClassificationsDTO));
             var data = new RateFeedbackDataChatCompletion(SystemPrompts.FEEDBACK_CLASSIFICATION_PROMPT, createFeedbackClassificationsDTO.feedback());
@@ -47,13 +45,16 @@ public class FeedbackClassificationsService {
             var newFeedbackClassifications = new FeedbackClassifications(createFeedbackClassificationsDTO.feedback(),feedback);
             feedbackClassificationsRepository.save(newFeedbackClassifications);
 
+            List<RequestedFeaturesDTO> newListRequestFeatures = new ArrayList<RequestedFeaturesDTO>();
             for (RequestedFeatures feature : feedback.requestedFeatures()) {
                 CreateRequestedFeaturesDTO requestedFeaturesDTO = new CreateRequestedFeaturesDTO(feature.getCode(), feature.getReason(), newFeedbackClassifications);
                 var newRequestedFeatures = new RequestedFeatures(requestedFeaturesDTO);
                 requestedFeaturesRepository.save(newRequestedFeatures);
+                newListRequestFeatures.add(new RequestedFeaturesDTO(newRequestedFeatures.getCode(),newRequestedFeatures.getReason()));
             }
 
-            return response;
+            var teste = new ResponseCreateFeedbackClassificationsDTO(newFeedbackClassifications.getId(), newFeedbackClassifications.getSentiment(), newListRequestFeatures, newFeedbackClassifications.getResponse());
+            return teste;
         } catch (Exception e) {
             e.printStackTrace();
             return null;
