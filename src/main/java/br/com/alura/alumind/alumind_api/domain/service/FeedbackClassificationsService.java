@@ -40,7 +40,6 @@ public class FeedbackClassificationsService {
             var data = new RateFeedbackDataChatCompletion(SystemPrompts.FEEDBACK_CLASSIFICATION_PROMPT, createFeedbackClassificationsDTO.feedback());
             var response = client.rateFeedbackChatCompletion(data);
             if (response == null || response.trim().isEmpty() || response.equalsIgnoreCase("null")) {
-                System.out.println("Resposta da API está nula ou vazia.");
                 return null;
             }
             response = MethodLibrary.formatJsonOpenAI(response);
