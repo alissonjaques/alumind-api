@@ -39,6 +39,10 @@ public class FeedbackClassificationsService {
             createFeedbackClassificationsValidation.forEach(v -> v.validate(createFeedbackClassificationsDTO));
             var data = new RateFeedbackDataChatCompletion(SystemPrompts.FEEDBACK_CLASSIFICATION_PROMPT, createFeedbackClassificationsDTO.feedback());
             var response = client.rateFeedbackChatCompletion(data);
+            if (response == null || response.trim().isEmpty() || response.equalsIgnoreCase("null")) {
+                System.out.println("Resposta da API está nula ou vazia.");
+                return null;
+            }
             response = MethodLibrary.formatJsonOpenAI(response);
             ObjectMapper objectMapper = new ObjectMapper();
             FeedbackClassificationsDTO feedback = objectMapper.readValue(response, FeedbackClassificationsDTO.class);
@@ -53,8 +57,8 @@ public class FeedbackClassificationsService {
                 newListRequestFeatures.add(new RequestedFeaturesDTO(newRequestedFeatures.getCode(),newRequestedFeatures.getReason()));
             }
 
-            var teste = new ResponseCreateFeedbackClassificationsDTO(newFeedbackClassifications.getId(), newFeedbackClassifications.getSentiment(), newListRequestFeatures, newFeedbackClassifications.getResponse());
-            return teste;
+            var responseCreateFeedbackClassificationsDTO = new ResponseCreateFeedbackClassificationsDTO(newFeedbackClassifications.getId(), newFeedbackClassifications.getSentiment(), newListRequestFeatures, newFeedbackClassifications.getCustomResponse());
+            return responseCreateFeedbackClassificationsDTO;
         } catch (Exception e) {
             e.printStackTrace();
             return null;
