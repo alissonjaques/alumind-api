@@ -4,4 +4,4 @@ import br.com.alura.alumind.alumind_api.domain.enums.Sentiment;
 
 import java.util.List;
 
-public record ResponseCreateFeedbackClassificationsDTO(Long id, Sentiment sentiment, List<RequestedFeaturesDTO> requestedFeatures, String response) { }
+public record ResponseCreateFeedbackClassificationsDTO(Long id, Sentiment sentiment, List<RequestedFeaturesDTO> requestedFeatures, String customResponse) { }

@@ -27,8 +27,8 @@ public class FeedbackClassifications {
     @Column(name = "feedback", nullable = false)
     private String feedback;
 
-    @Column(name = "response", nullable = false)
-    private String response;
+    @Column(name = "custom_response", nullable = false)
+    private String customResponse;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "sentiment", nullable = false)
@@ -41,7 +41,7 @@ public class FeedbackClassifications {
     public FeedbackClassifications(String feedback, FeedbackClassificationsDTO data) {
         this.feedback = feedback;
         this.sentiment = data.sentiment();
-        this.response = data.response();
+        this.customResponse = data.customResponse();
     }
 
     public FeedbackClassifications(Long id) {

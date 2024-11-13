@@ -28,7 +28,7 @@ public class SystemPrompts {
                           "reason": "<Motivo>"
                         }
                       ],
-                      "response": "<Mensagem personalizada>"
+                      "customResponse": "<Mensagem personalizada>"
                     }
                     • SPAM: Retorne null.
 
@@ -43,7 +43,7 @@ public class SystemPrompts {
                           "reason": "O usuário gostaria de editar seu perfil"
                         }
                       ],
-                      "response": "Obrigado pelo seu feedback positivo! Vamos considerar sua sugestão de facilitar a edição do perfil."
+                      "customResponse": "Obrigado pelo seu feedback positivo! Vamos considerar sua sugestão de facilitar a edição do perfil."
                     }
 
                     2. Feedback: "O app está mais lento, e as sessões de terapia têm problemas de áudio."
@@ -60,7 +60,7 @@ public class SystemPrompts {
                           "reason": "Problemas no áudio das sessões."
                         }
                       ],
-                      "response": "Agradecemos seu feedback. Estamos trabalhando para melhorar a performance e corrigir os problemas de áudio."
+                      "customResponse": "Agradecemos seu feedback. Estamos trabalhando para melhorar a performance e corrigir os problemas de áudio."
                     }
 
                     3. Feedback: "!!! COMPRE PRODUTOS MILAGROSOS PARA CURAR ANSIEDADE!!!"
@@ -71,7 +71,7 @@ public class SystemPrompts {
                     {
                       "sentiment": "INCONCLUSIVO",
                       "requestedFeatures": [],
-                      "response": "Agradecemos seu feedback! Esperamos que o Alumind possa ajudá-lo em sua jornada."
+                      "customResponse": "Agradecemos seu feedback! Esperamos que o Alumind possa ajudá-lo em sua jornada."
                     }
 
                 Resumo:
