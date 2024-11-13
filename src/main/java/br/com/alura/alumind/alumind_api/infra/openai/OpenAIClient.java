@@ -25,6 +25,7 @@ public class OpenAIClient {
         var request = ChatCompletionRequest
                 .builder()
                 .model("gpt-4-1106-preview")
+                .temperature(1.25)
                 .messages(Arrays.asList(
                         new ChatMessage(
                                 ChatMessageRole.SYSTEM.value(),
