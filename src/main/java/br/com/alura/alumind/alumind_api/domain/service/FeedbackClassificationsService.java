@@ -1,7 +1,8 @@
 package br.com.alura.alumind.alumind_api.domain.service;
 
 import br.com.alura.alumind.alumind_api.application.DTOs.feedback_classification.*;
-import br.com.alura.alumind.alumind_api.domain.enums.Sentiment;
+import br.com.alura.alumind.alumind_api.application.DTOs.requested_features.CreateRequestedFeaturesDTO;
+import br.com.alura.alumind.alumind_api.application.DTOs.requested_features.RequestedFeaturesDTO;
 import br.com.alura.alumind.alumind_api.domain.interfaces.FeedbackClassificationsRepository;
 import br.com.alura.alumind.alumind_api.domain.interfaces.RequestedFeaturesRepository;
 import br.com.alura.alumind.alumind_api.domain.model.FeedbackClassifications;
@@ -11,7 +12,6 @@ import br.com.alura.alumind.alumind_api.domain.utils.SystemPrompts;
 import br.com.alura.alumind.alumind_api.domain.validations.feedback_classifications.create.ICreateFeedbackClassficationsValidation;
 import br.com.alura.alumind.alumind_api.infra.openai.OpenAIClient;
 import br.com.alura.alumind.alumind_api.infra.openai.RateFeedbackDataChatCompletion;
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

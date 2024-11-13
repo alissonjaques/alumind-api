@@ -1,4 +1,4 @@
-package br.com.alura.alumind.alumind_api.application.DTOs.feedback_classification;
+package br.com.alura.alumind.alumind_api.application.DTOs.requested_features;
 
 import br.com.alura.alumind.alumind_api.domain.model.FeedbackClassifications;
 
