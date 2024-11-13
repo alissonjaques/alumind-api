@@ -1,7 +1,7 @@
 package br.com.alura.alumind.alumind_api.domain.model;
 
-import br.com.alura.alumind.alumind_api.application.DTOs.feedback_classification.CreateFeedbackClassificationsDTO;
-import br.com.alura.alumind.alumind_api.application.DTOs.feedback_classification.FeedbackClassificationsDTO;
+import br.com.alura.alumind.alumind_api.application.DTOs.feedback.CreateFeedbackDTO;
+import br.com.alura.alumind.alumind_api.application.DTOs.feedback.FeedbackDTO;
 import br.com.alura.alumind.alumind_api.domain.enums.Sentiment;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -9,13 +9,13 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@Table(name = "feedback_classifications")
-@Entity(name = "FeedbackClassifications")
+@Table(name = "feedback")
+@Entity(name = "Feedback")
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(of = "id")
-public class FeedbackClassifications {
+public class Feedback {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,17 +32,17 @@ public class FeedbackClassifications {
     @Column(name = "sentiment", nullable = false)
     private Sentiment sentiment;
 
-    public FeedbackClassifications(CreateFeedbackClassificationsDTO data) {
+    public Feedback(CreateFeedbackDTO data) {
         this.feedback = data.feedback();
     }
 
-    public FeedbackClassifications(String feedback, FeedbackClassificationsDTO data) {
+    public Feedback(String feedback, FeedbackDTO data) {
         this.feedback = feedback;
         this.sentiment = data.sentiment();
         this.customResponse = data.customResponse();
     }
 
-    public FeedbackClassifications(Long id) {
+    public Feedback(Long id) {
         this.id = id;
     }
 }

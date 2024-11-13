@@ -1,15 +1,15 @@
 package br.com.alura.alumind.alumind_api.domain.service;
 
-import br.com.alura.alumind.alumind_api.application.DTOs.feedback_classification.*;
+import br.com.alura.alumind.alumind_api.application.DTOs.feedback.*;
 import br.com.alura.alumind.alumind_api.application.DTOs.requested_features.CreateRequestedFeaturesDTO;
 import br.com.alura.alumind.alumind_api.application.DTOs.requested_features.RequestedFeaturesDTO;
-import br.com.alura.alumind.alumind_api.domain.interfaces.FeedbackClassificationsRepository;
+import br.com.alura.alumind.alumind_api.domain.interfaces.FeedbackRepository;
 import br.com.alura.alumind.alumind_api.domain.interfaces.RequestedFeaturesRepository;
-import br.com.alura.alumind.alumind_api.domain.model.FeedbackClassifications;
+import br.com.alura.alumind.alumind_api.domain.model.Feedback;
 import br.com.alura.alumind.alumind_api.domain.model.RequestedFeatures;
 import br.com.alura.alumind.alumind_api.domain.utils.MethodLibrary;
 import br.com.alura.alumind.alumind_api.domain.utils.SystemPrompts;
-import br.com.alura.alumind.alumind_api.domain.validations.feedback_classifications.create.ICreateFeedbackClassficationsValidation;
+import br.com.alura.alumind.alumind_api.domain.validations.feedback.create.ICreateFeedbackValidation;
 import br.com.alura.alumind.alumind_api.infra.openai.OpenAIClient;
 import br.com.alura.alumind.alumind_api.infra.openai.RateFeedbackDataChatCompletion;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -20,44 +20,44 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class FeedbackClassificationsService {
+public class FeedbackService {
     @Autowired
-    private FeedbackClassificationsRepository feedbackClassificationsRepository;
+    private FeedbackRepository feedbackRepository;
 
     @Autowired
     private RequestedFeaturesRepository requestedFeaturesRepository;
     @Autowired
-    List<ICreateFeedbackClassficationsValidation> createFeedbackClassificationsValidation;
+    List<ICreateFeedbackValidation> createFeedbackValidation;
 
     private OpenAIClient client;
 
-    public FeedbackClassificationsService(OpenAIClient client) {
+    public FeedbackService(OpenAIClient client) {
         this.client = client;
     }
-    public ResponseCreateFeedbackClassificationsDTO create(CreateFeedbackClassificationsDTO createFeedbackClassificationsDTO) {
+    public ResponseCreateFeedbackDTO create(CreateFeedbackDTO createFeedbackDTO) {
         try{
-            createFeedbackClassificationsValidation.forEach(v -> v.validate(createFeedbackClassificationsDTO));
-            var data = new RateFeedbackDataChatCompletion(SystemPrompts.FEEDBACK_CLASSIFICATION_PROMPT, createFeedbackClassificationsDTO.feedback());
+            createFeedbackValidation.forEach(v -> v.validate(createFeedbackDTO));
+            var data = new RateFeedbackDataChatCompletion(SystemPrompts.FEEDBACK_PROMPT, createFeedbackDTO.feedback());
             var response = client.rateFeedbackChatCompletion(data);
             if (response == null || response.trim().isEmpty() || response.equalsIgnoreCase("null")) {
                 return null;
             }
             response = MethodLibrary.formatJsonOpenAI(response);
             ObjectMapper objectMapper = new ObjectMapper();
-            FeedbackClassificationsDTO feedback = objectMapper.readValue(response, FeedbackClassificationsDTO.class);
-            var newFeedbackClassifications = new FeedbackClassifications(createFeedbackClassificationsDTO.feedback(),feedback);
-            feedbackClassificationsRepository.save(newFeedbackClassifications);
+            FeedbackDTO feedback = objectMapper.readValue(response, FeedbackDTO.class);
+            var newFeedback = new Feedback(createFeedbackDTO.feedback(),feedback);
+            feedbackRepository.save(newFeedback);
 
             List<RequestedFeaturesDTO> newListRequestFeatures = new ArrayList<RequestedFeaturesDTO>();
             for (RequestedFeatures feature : feedback.requestedFeatures()) {
-                CreateRequestedFeaturesDTO requestedFeaturesDTO = new CreateRequestedFeaturesDTO(feature.getCode(), feature.getReason(), newFeedbackClassifications);
+                CreateRequestedFeaturesDTO requestedFeaturesDTO = new CreateRequestedFeaturesDTO(feature.getCode(), feature.getReason(), newFeedback);
                 var newRequestedFeatures = new RequestedFeatures(requestedFeaturesDTO);
                 requestedFeaturesRepository.save(newRequestedFeatures);
                 newListRequestFeatures.add(new RequestedFeaturesDTO(newRequestedFeatures.getCode(),newRequestedFeatures.getReason()));
             }
 
-            var responseCreateFeedbackClassificationsDTO = new ResponseCreateFeedbackClassificationsDTO(newFeedbackClassifications.getId(), newFeedbackClassifications.getSentiment(), newListRequestFeatures, newFeedbackClassifications.getCustomResponse());
-            return responseCreateFeedbackClassificationsDTO;
+            var responseCreateFeedbackDTO = new ResponseCreateFeedbackDTO(newFeedback.getId(), newFeedback.getSentiment(), newListRequestFeatures, newFeedback.getCustomResponse());
+            return responseCreateFeedbackDTO;
         } catch (Exception e) {
             e.printStackTrace();
             return null;

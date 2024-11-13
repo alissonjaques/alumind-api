@@ -27,12 +27,12 @@ public class RequestedFeatures {
 
     @ManyToOne
     @JoinColumn(name = "feedback_id", nullable = false)
-    private FeedbackClassifications feedbackClassifications;
+    private Feedback feedback;
 
     public RequestedFeatures(CreateRequestedFeaturesDTO data) {
         this.code = data.code();
         this.reason = data.reason();
-        this.feedbackClassifications = data.feedbackClassifications();
+        this.feedback = data.feedback();
     }
 
     public RequestedFeatures(Long id) {

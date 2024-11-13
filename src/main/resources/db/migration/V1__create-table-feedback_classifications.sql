@@ -1,4 +1,4 @@
-CREATE TABLE feedback_classifications (
+CREATE TABLE feedback (
     id INT AUTO_INCREMENT PRIMARY KEY,
     feedback TEXT NOT NULL,
     sentiment ENUM('POSITIVO', 'NEGATIVO', 'INCONCLUSIVO') NOT NULL,

@@ -1,7 +1,7 @@
 package br.com.alura.alumind.alumind_api.domain.utils;
 
 public class SystemPrompts {
-    public static final String FEEDBACK_CLASSIFICATION_PROMPT =
+    public static final String FEEDBACK_PROMPT =
         """
                 A Alumind é uma startup de bem-estar mental que recebe feedbacks dos usuários sobre seu aplicativo, 
                 que inclui meditações guiadas e sessões de terapia. Precisamos analisar cada feedback para identificar 

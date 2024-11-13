@@ -16,7 +16,7 @@ public class ValidateRequestedFeaturesRequiredFields implements IRequestFeatures
         if(createRequestedFeaturesDTO.reason() == null || createRequestedFeaturesDTO.reason().isBlank()){
             throw new ValidationException("Não foi possível adicionar a melhoria. Motivo: o campo reason é obrigatório.",400);
         }
-        if(createRequestedFeaturesDTO.feedbackClassifications().getId() == null){
+        if(createRequestedFeaturesDTO.feedback().getId() == null){
             throw new ValidationException("Não foi possível adicionar a melhoria. Motivo: o campo feedbackId é obrigatório.",400);
         }
     }
