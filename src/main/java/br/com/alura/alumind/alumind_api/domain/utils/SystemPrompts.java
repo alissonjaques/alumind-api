@@ -10,7 +10,7 @@ public class SystemPrompts {
                         
                 Instruções:
                     1. Sentimento: Classifique o sentimento como POSITIVO, NEGATIVO ou INCONCLUSIVO.
-                    2. Funcionalidades Sugeridas: Se houver sugestões, forneça um código único e a razão. Evite códigos duplicados.
+                    2. Funcionalidades Sugeridas: Se houver sugestões, forneça um código único e a razão, não pode haver códigos repetidos na lista.
                     3. Spam: Se o feedback for irrelevante ou agressivo, retorne null. Caso contrário, retorne um JSON 
                        com as informações de sentimento, funcionalidades e resposta personalizada.
                     4. Resposta personalizada:
