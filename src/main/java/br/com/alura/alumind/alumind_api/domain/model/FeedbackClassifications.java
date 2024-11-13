@@ -9,8 +9,6 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
-
 @Table(name = "feedback_classifications")
 @Entity(name = "FeedbackClassifications")
 @Getter

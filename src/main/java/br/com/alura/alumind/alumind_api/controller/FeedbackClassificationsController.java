@@ -1,10 +1,8 @@
 package br.com.alura.alumind.alumind_api.controller;
 
 import br.com.alura.alumind.alumind_api.application.DTOs.feedback_classification.CreateFeedbackClassificationsDTO;
-import br.com.alura.alumind.alumind_api.application.DTOs.feedback_classification.ResponseCreateFeedbackClassificationsDTO;
 import br.com.alura.alumind.alumind_api.domain.interfaces.FeedbackClassificationsRepository;
 import br.com.alura.alumind.alumind_api.domain.service.FeedbackClassificationsService;
-import br.com.alura.alumind.alumind_api.infra.openai.OpenAIClient;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

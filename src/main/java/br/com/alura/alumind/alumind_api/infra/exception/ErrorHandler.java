@@ -1,6 +1,5 @@
 package br.com.alura.alumind.alumind_api.infra.exception;
 
-import br.com.alura.alumind.alumind_api.application.DTOs.exceptions.ExceptionDTO;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
