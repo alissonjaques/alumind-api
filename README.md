@@ -24,6 +24,7 @@
        ALUMIND_DATASOURCE_PASSWORD = <sua senha do MySQL>
        ALUMIND_DATASOURCE_URL = jdbc:mysql://localhost/alumind_api?createDatabaseIfNotExist=true
 - Execute a aplicação. Na primeira execução, o sistema irá rodar as migrações para configurar o banco de dados automaticamente.
+- A aplicação ficará escutando na porta 8080 e requisições deve ser feitas, por exemplo, assim: http://localhost:8080/feedbacks
 
 Aproveite a API e explore as funcionalidades disponíveis!!
 
