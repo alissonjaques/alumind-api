@@ -1,6 +1,6 @@
 # AluMind API 🤖
 
-| Autor | Alisso Jaques |
+| Autor | Alisson Jaques |
 | -------------  | --- |
 | Tecnologias | Java, Framework Spring, JPA, Hibernate, Rest, SQL, MySQL, DDD, OpenAI, Inteligência Artificial Generativa, LLM's
 
