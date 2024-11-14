@@ -24,7 +24,7 @@
        ALUMIND_DATASOURCE_PASSWORD = <sua senha do MySQL>
        ALUMIND_DATASOURCE_URL = jdbc:mysql://localhost/alumind_api?createDatabaseIfNotExist=true
 - Execute a aplicação. Na primeira execução, o sistema irá rodar as migrações para configurar o banco de dados automaticamente.
-- A aplicação ficará escutando na porta 8080 e requisições deve ser feitas, por exemplo, assim: http://localhost:8080/feedbacks
+- A aplicação ficará escutando na porta 8080 e requisições deve ser feitas, por exemplo, assim: http://localhost:8080/feedback
 
 Aproveite a API e explore as funcionalidades disponíveis!!
 
@@ -56,21 +56,22 @@ Aproveite a API e explore as funcionalidades disponíveis!!
 - Possuir a JDK 17 (o projeto foi desenvolvido com a versão 17 do java)
 - IDE do IntelliJ
 - SGBD do MySQL com um usuário e senha cadastrados
+- Conta cadastrada na OpenAI com uma chave de acesso disponível
 
 ## Dúvidas ao desenvolver o projeto e explicação das decisões tomadas
 
-<p align="justify">A principal dúvida que surgiu no projeto foi referente aos códigos únicos da funcionalidades sugeridas. Existem dois cenários para interpretação que impactam diretamente nos custos e complexidade do projeto. São eles:</p>
+<p align="justify">A principal dúvida que surgiu no projeto foi referente aos códigos únicos da funcionalidades sugeridas. Existem dois cenários para interpretação que impactam diretamente nos custos e performance do projeto. São eles:</p>
 
 - Os códigos podem repetir se forem de feedbacks distintos
 
-<p align="justify">Nesta abordagem, um código de funcionalidade sugerida pode aparecer em vários feedbacks distintos. Com isso, a modelagem do banco de dados é simplificada, seguindo uma estrutura 1:N
-, onde um feedback pode ter várias funcionalidades sugeridas, mas cada funcionalidade está relacionada diretamente a um feedback. Essa opção apresenta complexidade de desenvolvimento mais baixa, pois não é necessário garantir a exclusividade dos códigos globalmente. Assim, o modelo não precisa acessar a lista completa de códigos das funcionalidades sugeridas no banco de dados, o que reduz o consumo de tokens e latência da aplicação, resultando em menores custos operacionais.</p> 
+<p align="justify">Nesta abordagem, um código de funcionalidade sugerida pode aparecer em vários feedbacks distintos. Com isso, a modelagem do banco de dados é simplificada, seguindo uma estrutura 1:N , onde um feedback pode ter várias funcionalidades sugeridas, mas cada funcionalidade está relacionada diretamente a um feedback. Essa opção apresenta complexidade de desenvolvimento mais baixa, pois não é necessário garantir a exclusividade dos códigos globalmente. Sendo necessário um único prompt, o que reduz o consumo de tokens e latência da aplicação, resultando em menores custos operacionais. Posteriormente, quando for necessário criar a nova feature, pode ser feito uma listagem por código e assim criar um prompt que gere uma nova reason tendo como base todas as reasons com o mesmo código, gerando uma reason que englobe todos os casos, em seguida deixar no banco de dados apenas um registro com esse código e a nova reason associada a ele.</p> 
 
-- O código não pode repetir mesmo se for de feedbacks dintintos
+- O código não pode repetir, mesmo se for de feedbacks dintintos
 
-<p align="justify">Neste caso a modelagem das tabelas ficaria N:N ou seja um feedback pode ter muitas funcionalidades sugeridas e uma funcionalidade sugerida pode ter muitos feedbacks. A complexidade de desenvolvimento é maior do que o item anterior, pois nesse caso será preciso criar um novo prompt que analisa todos os códigos de funcionalidades sugeridas e cria um novo código diferente de todos os outros cadastrados (o que poderia aumentar a latência e custos da aplicação) e gerenciar esse comportamento também no código fazendo uma nova listagem que carrega todos os ids dos RequestedFeatures e os manda em lote para a open IA analisar. Outra abordagem seria criar um único prompt, mas ele ficaria muito grande e o custo iria aumentar bastante.</p>
+<p align="justify">Neste caso a modelagem das tabelas ficaria N:N ou seja um feedback pode ter muitas funcionalidades sugeridas e uma funcionalidade sugerida pode ter muitos feedbacks. 
+Seria preciso analisar cada nova funcionalidade sugerida verificando se já tem o código cadastrado no banco de dados, no caso de ocorrer seria preciso alinhar com o time o requisito de ‘o que fazer com o reason dessa nova funcionalidade’ (ignorar, gerar um novo prompt que mescla o que tem no banco de dados com o que está vindo, etc) e, por fim, vincular a funcionalidade sugerida que já está cadastrada com o novo feedback. Nesse caso o custo seria um pouco maior, bem como a latência do sistema por ter duas requisições à API da OpenAI por requisição à rota da AluMind, isso se o requisito exigir a criação do novo prompt.</p>
 
-<p align="justify">Em um cenário real eu conversaria com a equipe e envolvidos para poder alinhar o que realmente seria preciso, só assim eu tomaria a decisão. No desafio, ao analisar os dois casos optei pelo caso mais simples, ou seja, o caso 1. Sendo assim um feedback pode ter várias funcionalidades sugeridas e cada funcionalidade sugerida tem relação com um único feedback. Abaixo tem-se uma imagem que demonstra como ficou modelado o relacionamento das tabelas:</p>
+<p align="justify">Em um cenário real eu conversaria com a equipe e envolvidos para poder alinhar o que realmente seria preciso, com o requisito claro eu daria procedimento na implementação. No desafio, ao analisar os dois casos optei pelo caso 1, por ser mais barato e ter uma performance maior. Sendo assim um feedback pode ter várias funcionalidades sugeridas e cada funcionalidade sugerida tem relação com um único feedback. Abaixo tem-se uma imagem que demonstra como ficou modelado o relacionamento das tabelas: </p>
 
 <p align="center">
   <img src="https://github.com/alissonjaques/imagens-aplicacoes/blob/main/alumind-api/esquema-banco-de-dados.png" alt="diagrama de entidade relacionamento do bando de dados da AluMind">
